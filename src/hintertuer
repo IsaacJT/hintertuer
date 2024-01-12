@@ -1,0 +1,74 @@
+#!/bin/sh -e
+
+local_port="$(snapctl get local-port)"
+local_host="$(snapctl get local-host)"
+remote_port="$(snapctl get remote-port)"
+remote_host="$(snapctl get remote-host)"
+remote_addr="$(snapctl get remote-addr)"
+ssh_key="$(snapctl get ssh-key)"
+user="$(snapctl get user)"
+invalid=0
+
+if [ -z "${remote_port}" ]; then
+        echo "Remote port must be set with:"
+        echo "snap set ${SNAP_NAME} remote-port=<value>"
+        invalid=1
+fi
+
+if [ -z "${local_port}" ]; then
+        echo "Local port must be set with:"
+        echo "snap set ${SNAP_NAME} local-port=<value>"
+        invalid=1
+fi
+
+if [ -z "${remote_host}" ]; then
+        echo "Remote host must be set with:"
+        echo "snap set ${SNAP_NAME} remote-host=<value>"
+        invalid=1
+fi
+
+if [ -z "${remote_addr}" ]; then
+        echo "Remote address must be set with:"
+        echo "snap set ${SNAP_NAME} remote-addr=<value>"
+        invalid=1
+fi
+
+if [ -z "${local_host}" ]; then
+        echo "Local host must be set with:"
+        echo "snap set ${SNAP_NAME} local-host=<value>"
+        invalid=1
+fi
+
+if [ -z "${ssh_key}" ]; then
+        echo "SSH identity filename must be set with:"
+        echo "snap set ${SNAP_NAME} ssh-key=<value>"
+        echo "This will be loaded from ${SNAP_DATA_COMMON}."
+        invalid=1
+fi
+
+ssh_key_path="${SNAP_COMMON}/${ssh_key}"
+if ! [ -e "${ssh_key_path}" ]; then
+        echo "SSH identity file does not exist: ${ssh_key_path}"
+        echo "Set the name of the identity file using:"
+        echo "snap set ${SNAP_NAME} ssh-key-path=<value>"
+        echo "This will be loaded from ${SNAP_COMMON}."
+        invalid=1
+fi
+
+if [ -z "${user}" ]; then
+        echo "Remote username be set with:"
+        echo "snap set ${SNAP_NAME} user=<value>"
+        invalid=1
+fi
+
+if [ "${invalid}" = "1" ]; then
+        exit 1
+fi
+
+echo "Connecting to ${user}@${remote_host} with " \
+        "'-R ${remote_addr}:${remote_port}:${local_host}:${local_port}'"
+exec ssh -N -i "${ssh_key_path}" \
+        -R "${remote_addr}":"${remote_port}":"${local_host}":"${local_port}" \
+        -o ServerAliveInterval=60 -o StrictHostKeyChecking=yes \
+        -o UserKnownHostsFile="${SNAP_COMMON}"/known_hosts \
+        "${user}"@"${remote_host}"

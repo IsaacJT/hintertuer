@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+echo "Generating a new ecdsa SSH key pair..."
+ssh-keygen -v -b 521 -t ecdsa -f "${SNAP_COMMON}"/id_ecdsa -q -N ""
+echo "SSH public key:"
+cat "${SNAP_COMMON}"/id_ecdsa.pub
+echo "The SSH public key can be viewed later by opening ${SNAP_COMMON}/id_ecdsa.pub"

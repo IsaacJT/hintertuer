@@ -1,0 +1,41 @@
+#!/bin/sh -e
+
+ssh_key="$(snapctl get ssh-key)"
+if [ -z "${ssh_key}" ]; then
+        snapctl set ssh-key="id_ecdsa"
+fi
+
+local_host="$(snapctl get local-host)"
+if [ -z "${local_host}" ]; then
+        snapctl set local-host="localhost"
+fi
+
+local_port="$(snapctl get local-port)"
+if [ -z "${local_port}" ]; then
+        snapctl set local-port=""
+fi
+
+remote_port="$(snapctl get remote-port)"
+if [ -z "${remote_port}" ]; then
+        snapctl set remote-port=""
+fi
+
+remote_host="$(snapctl get remote-host)"
+if [ -z "${remote_host}" ]; then
+        snapctl set remote-host=""
+fi
+
+remote_addr="$(snapctl get remote-addr)"
+if [ -z "${remote_addr}" ]; then
+        snapctl set remote-addr="localhost"
+fi
+
+user="$(snapctl get user)"
+if [ -z "${user}" ]; then
+        snapctl set user="ubuntu"
+fi
+
+host_key="$(snapctl get host-key)"
+if [ -z "${host_key}" ]; then
+        snapctl set host-key=""
+fi

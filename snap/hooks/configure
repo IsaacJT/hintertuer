@@ -1,0 +1,15 @@
+#!/bin/sh -e
+
+local_port="$(snapctl get local-port)"
+if ! echo "${local_port:-0}" | grep -E '^[0-9]+$'; then
+        echo "Local port must be an integer value"
+        exit 1
+fi
+
+remote_port="$(snapctl get remote-port)"
+if ! echo "${remote_port:-0}" | grep -E '^[0-9]+$'; then
+        echo "Remote port must be an integer value"
+        exit 1
+fi
+
+snapctl get host-key > "${SNAP_COMMON}"/known_hosts
