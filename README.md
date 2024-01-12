@@ -19,9 +19,10 @@ the values as needed):
     snap set hintertuer user="ubuntu"
 
 This example configuration will result in port 443 (local-port) on the
-client's machine (where the snap is installed) being made available on port
-10443 (remote-port) on myhost.example.com (remote-host), bound to the address
-localhost (local-host).
+host localhost (local-host), as if it were accessed by the client host (where
+the snap is installed), being made available on port 10443 (remote-port) on
+myhost.example.com (remote-host), bound to the address localhost
+(remote-addr).
 
 In order to improve security, the remote host's key must be configured.
 You can obtain the key by using the `ssh-keyscan` utility, and configuring the
