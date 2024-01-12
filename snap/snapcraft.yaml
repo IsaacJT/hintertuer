@@ -8,7 +8,7 @@ source-code: https://github.com/IsaacJT/hintertuer
 summary: Automatic SSH remote port forwarding tool
 description: |
   Automatically connect to a remote SSH server and remotely forward a local
-  port.
+  port using SSH's built-in remote forwarding feature (the `-R` argument).
 
   The various parameters for setting up the port forwarding are configured using
   snap configuration parameters. Set the various values as follows (changing
