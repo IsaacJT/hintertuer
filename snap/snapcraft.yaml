@@ -1,5 +1,5 @@
 name: hintertuer
-base: core22
+base: core24
 version: '0.1'
 license: GPL-2.0+
 contact: isaac@is.having.coffee
@@ -67,11 +67,11 @@ parts:
       shellcheck "${CRAFT_PART_BUILD}"/hintertuer
 
       install -Dm0755 "${CRAFT_PART_BUILD}"/hintertuer \
-        "${CRAFT_PART_INSTALL}"/usr/bin/hintertuer
+        "${CRAFT_PART_INSTALL}"/usr/local/bin/hintertuer
 
 apps:
   hintertuer:
-    command: usr/bin/hintertuer
+    command: usr/local/bin/hintertuer
     daemon: simple
     plugs:
       - network-bind
