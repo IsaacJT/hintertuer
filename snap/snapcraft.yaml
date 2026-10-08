@@ -1,5 +1,5 @@
 name: hintertuer
-base: core24
+base: core26
 version: '0.1'
 license: GPL-2.0+
 contact: isaac@is.having.coffee
