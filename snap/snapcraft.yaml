@@ -1,7 +1,7 @@
 name: hintertuer
 title: Hintertür
 base: core26
-version: '0.1'
+version: '0.2'
 license: GPL-2.0+
 contact: isaac@is.having.coffee
 issues: https://github.com/IsaacJT/hintertuer/issues
