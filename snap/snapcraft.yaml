@@ -1,9 +1,11 @@
 name: hintertuer
+title: Hintertür
 base: core26
 version: '0.1'
 license: GPL-2.0+
 contact: isaac@is.having.coffee
 issues: https://github.com/IsaacJT/hintertuer/issues
+website: https://github.com/IsaacJT/hintertuer
 source-code: https://github.com/IsaacJT/hintertuer
 summary: Automatic SSH remote port forwarding tool
 description: |
