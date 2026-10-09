@@ -1,15 +1,36 @@
 #!/bin/sh -e
 
+validate_port() {
+        port="$1"
+        label="$2"
+
+        # Unset ports are allowed while the snap is being configured.
+        if [ -z "${port}" ]; then
+                return
+        fi
+
+        case "${port}" in
+                *[!0-9]*)
+                        echo "${label} port must be an integer value"
+                        exit 1
+                        ;;
+        esac
+
+        # Strip leading zeroes and bound the length before integer comparisons.
+        while [ "${port#0}" != "${port}" ]; do
+                port="${port#0}"
+        done
+        port="${port:-0}"
+        if [ "${#port}" -gt 5 ] || [ "${port}" -lt 1 ] || [ "${port}" -gt 65535 ]; then
+                echo "${label} port must be between 1 and 65535"
+                exit 1
+        fi
+}
+
 local_port="$(snapctl get local-port)"
-if ! echo "${local_port:-0}" | grep -E '^[0-9]+$'; then
-        echo "Local port must be an integer value"
-        exit 1
-fi
+validate_port "${local_port}" "Local"
 
 remote_port="$(snapctl get remote-port)"
-if ! echo "${remote_port:-0}" | grep -E '^[0-9]+$'; then
-        echo "Remote port must be an integer value"
-        exit 1
-fi
+validate_port "${remote_port}" "Remote"
 
 snapctl get host-key > "${SNAP_COMMON}"/known_hosts
