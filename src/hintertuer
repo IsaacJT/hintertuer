@@ -42,7 +42,7 @@ fi
 if [ -z "${ssh_key}" ]; then
         echo "SSH identity filename must be set with:"
         echo "snap set ${SNAP_NAME} ssh-key=<value>"
-        echo "This will be loaded from ${SNAP_DATA_COMMON}."
+        echo "This will be loaded from ${SNAP_COMMON}."
         invalid=1
 fi
 
@@ -50,7 +50,7 @@ ssh_key_path="${SNAP_COMMON}/${ssh_key}"
 if ! [ -e "${ssh_key_path}" ]; then
         echo "SSH identity file does not exist: ${ssh_key_path}"
         echo "Set the name of the identity file using:"
-        echo "snap set ${SNAP_NAME} ssh-key-path=<value>"
+        echo "snap set ${SNAP_NAME} ssh-key=<value>"
         echo "This will be loaded from ${SNAP_COMMON}."
         invalid=1
 fi
