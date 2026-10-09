@@ -83,5 +83,7 @@ apps:
   hintertuer:
     command: usr/local/bin/hintertuer
     daemon: simple
+    restart-condition: always
+    restart-delay: 10s
     plugs:
       - network-bind
