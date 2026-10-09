@@ -1,0 +1,41 @@
+---
+# SPDX-License-Identifier: GPL-2.0-only
+name: build-snap
+"on":
+  pull_request: {}
+  push:
+    branches:
+      - main
+  schedule:
+    # Run weekly (Monday 03:00 UTC)
+    - cron: "0 3 * * 1"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build snap on ${{ matrix.build-host.name }}
+    runs-on: ${{ matrix.build-host.value }}
+    strategy:
+      matrix:
+        build-host:
+          - name: Ubuntu 26.04 arm64
+            value: ubuntu-26.04-arm
+          - name: Ubuntu 26.04 amd64
+            value: ubuntu-26.04
+    steps:
+      # yamllint disable rule:line-length
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - id: build
+        uses: canonical/craft-actions/snapcraft/pack@18dd03ef9a20ef330dd3ca7b264bd45c6b892e9e
+      - name: Upload snapcraft logs on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: snapcraft-log-${{ matrix.build-host.value }}
+          path: ~/.local/state/snapcraft/log/
+          if-no-files-found: warn
+          retention-days: 14
+        # yamllint enable rule:line-length
